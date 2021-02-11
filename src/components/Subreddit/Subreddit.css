@@ -1,0 +1,31 @@
+.card .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.card:hover {
+    cursor: pointer;
+    border-color: #888;
+}
+
+.card__flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card__col-left {
+    padding: 0 3px;
+    font-size: 2rem;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.card__col-right {
+    padding: 0;
+    flex: 1;
+}
+
+.card__user,
+.card__date {
+    margin-right: 5px;
+}

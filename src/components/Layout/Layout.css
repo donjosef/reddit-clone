@@ -1,0 +1,39 @@
+.menu {
+    display: flex;
+    align-items: center;
+}
+
+.menu__user-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-right: 8px;
+    position: relative;
+}
+
+.menu img {
+    width: 40px;
+    height: 40px;
+}
+
+.menu__tooltip {
+    background: #222;
+    border-radius: 4px;
+    position: absolute;
+    right: 20%;
+    top: 110%;
+    white-space: nowrap;
+    padding: 4px;
+    color: white;
+    font-size: 0.79em;
+}
+
+.arrow {
+    position: absolute;
+    top: -3px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    background: inherit;
+}
