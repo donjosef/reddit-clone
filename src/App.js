@@ -42,7 +42,6 @@ function App() {
     const unsubsrcibe = db
       .collection('subreddits')
       .onSnapshot(snapshot => {
-        console.log('inside event snapshot, invoked!')
         const subreddits = []
         snapshot.forEach(doc => {
           subreddits.push(doc.data())
