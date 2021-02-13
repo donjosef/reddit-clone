@@ -25,7 +25,13 @@
     flex: 1;
 }
 
-.card__user,
-.card__date {
+.card__user, .card__date {
     margin-right: 5px;
+}
+
+.userImg {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    border-radius: 3px;
 }
