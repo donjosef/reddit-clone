@@ -19,7 +19,7 @@ const isImage = (url) => {
 
 const Subreddit = ({ user }) => {
     const [posts, setPosts] = useState([])
-    const [users, setUsers] = useState([])
+    const [users, setUsers] = useState({})
     const params = useParams()
     const subreddit = useSelector(state => state.subreddits.find(subreddit => subreddit.name === params.name))
 
@@ -47,11 +47,11 @@ const Subreddit = ({ user }) => {
 
     useEffect(async () => {
         if (posts.length) {
-            let users = []
-            for (let post of posts) {
-                const user = await db.collection('users').doc(post.user_id).get() //IMPORTANTE: da rivedere await dentro loop
-                const userName = user.get('name')
-                users.push(userName)
+            const userIds = [...new Set(posts.map(post => post.user_id))]
+            let users = {}
+            for (let userId of userIds) {
+                const user = await db.collection('users').doc(userId).get() 
+                users[userId] = user.data()
             }
 
             setUsers(users)
@@ -87,7 +87,7 @@ const Subreddit = ({ user }) => {
                             <div className="card__col-left">^</div>
                             <div className="card__col-right">
                                 <div className="card-body pt-1">
-                                    <span className="card__user">Posted by {users[ind]}</span>
+                                    <span className="card__user">Posted by {users[post.user_id].name}</span>
                                     <span className="card__date">{post.created_at.toDate().toLocaleString()}</span>
                                     <h5 className="card-title mt-2">{post.title}</h5>
                                     <p className="card-text">{post.description}</p>
