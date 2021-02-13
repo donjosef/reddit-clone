@@ -70,7 +70,7 @@ const Subreddit = ({ user }) => {
         }
         await db.collection('posts').add(post)
     }
-
+console.log('users object: ', users)
     return (
         <div>
             <h2 className="text-muted mb-5">{params.name.toUpperCase()}</h2>
@@ -87,7 +87,10 @@ const Subreddit = ({ user }) => {
                             <div className="card__col-left">^</div>
                             <div className="card__col-right">
                                 <div className="card-body pt-1">
-                                    <span className="card__user">Posted by {users[post.user_id].name}</span>
+                                    <img className="userImg" src={users[post.user_id] ? users[post.user_id].image : ''}/>
+                                    <span className="card__user">
+                                        Posted by {users[post.user_id] ? users[post.user_id].name : ''}
+                                    </span>
                                     <span className="card__date">{post.created_at.toDate().toLocaleString()}</span>
                                     <h5 className="card-title mt-2">{post.title}</h5>
                                     <p className="card-text">{post.description}</p>
