@@ -1,21 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import CreatePostForm from '../CreatePostForm'
+import PostCard from '../PostCard'
 import { useParams } from 'react-router-dom'
 import { useSelector, useStore } from 'react-redux'
 import db from '../../db'
 import firebase from '../../firebase'
-
-import './Subreddit.css'
-
-const isImage = (url) => {
-    const indexOfQuestionMark = url.indexOf('?')
-    if (indexOfQuestionMark !== -1) {
-        const spliced = url.substring(0, indexOfQuestionMark)
-        return new RegExp(/(png|jpg|jpeg|gif)$/).test(spliced)
-    }
-
-    return new RegExp(/(png|jpg|jpeg|gif)$/).test(url)
-}
 
 const Subreddit = ({ user }) => {
     const [posts, setPosts] = useState([])
@@ -50,7 +39,7 @@ const Subreddit = ({ user }) => {
             const userIds = [...new Set(posts.map(post => post.user_id))]
             let users = {}
             for (let userId of userIds) {
-                const user = await db.collection('users').doc(userId).get() 
+                const user = await db.collection('users').doc(userId).get()
                 users[userId] = user.data()
             }
 
@@ -70,7 +59,11 @@ const Subreddit = ({ user }) => {
         }
         await db.collection('posts').add(post)
     }
-console.log('users object: ', users)
+
+    const handleDeletePost = async (postId) => {
+        await db.collection('posts').doc(postId).delete()
+    }
+
     return (
         <div>
             <h2 className="text-muted mb-5">{params.name.toUpperCase()}</h2>
@@ -82,24 +75,12 @@ console.log('users object: ', users)
 
             <section className="mt-5">
                 {posts.map((post, ind) => (
-                    <div key={post.id} className="card mb-3">
-                        <div className="card__flex g-0">
-                            <div className="card__col-left">^</div>
-                            <div className="card__col-right">
-                                <div className="card-body pt-1">
-                                    <img className="userImg" src={users[post.user_id] ? users[post.user_id].image : ''}/>
-                                    <span className="card__user">
-                                        Posted by {users[post.user_id] ? users[post.user_id].name : ''}
-                                    </span>
-                                    <span className="card__date">{post.created_at.toDate().toLocaleString()}</span>
-                                    <h5 className="card-title mt-2">{post.title}</h5>
-                                    <p className="card-text">{post.description}</p>
-                                    {(post.url && isImage(post.url)) && <img src={post.url} />}
-                                    {post.url && !isImage(post.url) && <a href={post.url} target="_blank">{post.url}</a>}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <PostCard 
+                        user={user}
+                        key={post.id} 
+                        post={post} 
+                        onDeletePost={handleDeletePost}
+                        users={users}/>
                 ))}
             </section>
         </div>
