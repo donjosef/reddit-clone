@@ -17,11 +17,19 @@ const isImage = (url) => {
 
 const PostCard = ({ post, onDeletePost, user, users }) => {
     const [isPopoverOpen, setIsPopoverOpen] = useState(false)
-    
+
     return (
         <div className="card mb-3">
             <div className="card__flex g-0">
-                <div className="card__col-left">^</div>
+                <div className="card__col-left">
+                    <span className="card__vote-up">
+                        <img src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-arrow-up-b-256.png"/>
+                    </span>
+                    <span className="card__vote">{post.votes ? post.votes : null}</span>
+                    <span className="card__vote-down">
+                        <img src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-arrow-down-b-256.png"/>
+                    </span>
+                </div>
                 <div className="card__col-right">
                     <div className="card-body pt-1">
                         <div className="card__header">
@@ -55,7 +63,7 @@ const PostCard = ({ post, onDeletePost, user, users }) => {
                         <h5 className="card-title mt-2">{post.title}</h5>
                         <p className="card-text">{post.description}</p>
                         <div>
-                            {(post.url && isImage(post.url)) && <img style={{width: '100%'}} src={post.url} />}
+                            {(post.url && isImage(post.url)) && <img style={{ width: '100%' }} src={post.url} />}
                         </div>
                         {post.url && !isImage(post.url) && <a href={post.url} target="_blank">{post.url}</a>}
                     </div>
