@@ -15,18 +15,18 @@ const isImage = (url) => {
     return new RegExp(/(png|jpg|jpeg|gif)$/).test(url)
 }
 
-const PostCard = ({ post, onDeletePost, user, users }) => {
+const PostCard = ({ post, vote, onVotePost, onDeletePost, user, users }) => {
     const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
     return (
         <div className="card mb-3">
             <div className="card__flex g-0">
                 <div className="card__col-left">
-                    <span className="card__vote-up">
+                    <span onClick={() => onVotePost(post.id, 'add')} className="card__vote-up">
                         <img src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-arrow-up-b-256.png"/>
                     </span>
-                    <span className="card__vote">{post.votes ? post.votes : null}</span>
-                    <span className="card__vote-down">
+                    <span className="card__vote">{vote}</span>
+                    <span onClick={() => onVotePost(post.id, 'delete')} className="card__vote-down">
                         <img src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-arrow-down-b-256.png"/>
                     </span>
                 </div>
