@@ -70,11 +70,18 @@
     margin: 2px 0;
 }
 
-.card__vote-up, .card__vote-down {
+.card__vote-up, 
+.card__vote-down {
     max-width: 100%;
 }
 
-.card__vote-up img, .card__vote-down img {
+.card__vote-up:hover, 
+.card__vote-down:hover {
+    background: #d9d9d9;
+}
+
+.card__vote-up img, 
+.card__vote-down img {
     max-width: 100%;
     filter: opacity(70%);
 }
