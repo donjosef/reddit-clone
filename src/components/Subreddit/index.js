@@ -10,6 +10,8 @@ const Subreddit = ({ user }) => {
     const [posts, setPosts] = useState([])
     const [users, setUsers] = useState({})
     const [votes, setVotes] = useState({})
+    const [isFormOpen, setIsFormOpen] = useState(false)
+    const [formMode, setFormMode] = useState('')
     const params = useParams()
     const subreddit = useSelector(state => state.subreddits.find(subreddit => subreddit.name === params.name))
 
@@ -18,6 +20,7 @@ const Subreddit = ({ user }) => {
             const unsubsrcibe = db
                 .collection('posts')
                 .where('subreddit_id', '==', subreddit.id)
+                .orderBy('created_at', 'desc')
                 .onSnapshot(snapshot => {
                     const posts = []
                     snapshot.forEach(doc => {
@@ -107,11 +110,20 @@ const Subreddit = ({ user }) => {
         }
     }
 
+    const handleOpenForm = (mode) => {
+        setFormMode(mode)
+        setIsFormOpen(!isFormOpen)
+    }
+
     return (
         <div>
             <h2 className="text-muted mb-5">{params.name.toUpperCase()}</h2>
             {user ? (
-                <CreatePostForm onCreatePost={handleCreatePost} />
+                <CreatePostForm 
+                    mode={formMode}
+                    onCreatePost={handleCreatePost} 
+                    isOpen={isFormOpen} 
+                    onToggleForm={() => handleOpenForm('create')} />
             ) : (
                     <span className="text-muted">Please log in to create a post</span>
                 )}
@@ -125,7 +137,8 @@ const Subreddit = ({ user }) => {
                         vote={votes[post.id]}
                         onDeletePost={handleDeletePost}
                         onVotePost={handleVotePost}
-                        users={users} />
+                        users={users}
+                        onToggleForm={() => handleOpenForm('update')} />
                 ))}
             </section>
         </div>
