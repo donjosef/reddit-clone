@@ -1,7 +1,7 @@
 # Reddit clone with firebase react, redux, react-router, bootswatch
 
 * [x] Add Firebase Auth
-  * [x] https://firebase.google.com/docs/auth/web/google-signin
+  * https://firebase.google.com/docs/auth/web/google-signin
 * [x] Show Subreddits on Home Page
 * [x] Show Single Subreddit
 * [x] New Post Form
