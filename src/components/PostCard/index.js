@@ -15,7 +15,7 @@ const isImage = (url) => {
     return new RegExp(/(png|jpg|jpeg|gif)$/).test(url)
 }
 
-const PostCard = ({ post, vote, onVotePost, onDeletePost, user, users, onToggleForm }) => {
+const PostCard = ({ post, vote, onVotePost, onDeletePost, user, users, onOpenForm }) => {
     const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
     return (
@@ -54,7 +54,7 @@ const PostCard = ({ post, vote, onVotePost, onDeletePost, user, users, onToggleF
                             {isPopoverOpen && (
                                 <div className="card__popover">
                                     <ul>
-                                        <li onClick={onToggleForm}>Update post</li>
+                                        <li onClick={onOpenForm}>Update post</li>
                                         <li onClick={() => onDeletePost(post.id)}>Delete Post</li>
                                     </ul>
                                 </div>

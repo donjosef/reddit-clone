@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import CreatePostForm from '../CreatePostForm'
+import PostForm from '../PostForm'
 import PostCard from '../PostCard'
 import { useParams } from 'react-router-dom'
 import { useSelector, useStore } from 'react-redux'
@@ -8,6 +8,7 @@ import firebase from '../../firebase'
 
 const Subreddit = ({ user }) => {
     const [posts, setPosts] = useState([])
+    const [activePost, setActivePost] = useState({})
     const [users, setUsers] = useState({})
     const [votes, setVotes] = useState({})
     const [isFormOpen, setIsFormOpen] = useState(false)
@@ -64,6 +65,15 @@ const Subreddit = ({ user }) => {
         await db.collection('posts').add(post)
     }
 
+    const handleUpdatePost = async (formValues) => {
+        const postRef = db.collection('posts').doc(activePost.id)
+
+        await postRef.update({
+            ...formValues,
+            updated_at: firebase.firestore.FieldValue.serverTimestamp()
+        })
+    }
+
     const handleDeletePost = async (postId) => {
         await db.collection('posts').doc(postId).delete()
     }
@@ -110,20 +120,31 @@ const Subreddit = ({ user }) => {
         }
     }
 
-    const handleOpenForm = (mode) => {
+    const handleOpenForm = (mode, post) => {
+        if(mode === 'update') {
+            setActivePost(post)
+        }
         setFormMode(mode)
-        setIsFormOpen(!isFormOpen)
+        setIsFormOpen(true)
+    }
+
+    const handleCloseForm = () => {
+        setIsFormOpen(false)
+        setActivePost({})
     }
 
     return (
         <div>
             <h2 className="text-muted mb-5">{params.name.toUpperCase()}</h2>
             {user ? (
-                <CreatePostForm 
+                <PostForm 
+                    activePost={activePost}
                     mode={formMode}
                     onCreatePost={handleCreatePost} 
+                    onUpdatePost={handleUpdatePost} 
                     isOpen={isFormOpen} 
-                    onToggleForm={() => handleOpenForm('create')} />
+                    onOpenForm={() => handleOpenForm('create')}
+                    onCloseForm={handleCloseForm} />
             ) : (
                     <span className="text-muted">Please log in to create a post</span>
                 )}
@@ -138,7 +159,7 @@ const Subreddit = ({ user }) => {
                         onDeletePost={handleDeletePost}
                         onVotePost={handleVotePost}
                         users={users}
-                        onToggleForm={() => handleOpenForm('update')} />
+                        onOpenForm={() => handleOpenForm('update', post)} />
                 ))}
             </section>
         </div>
