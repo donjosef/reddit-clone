@@ -14,6 +14,7 @@
 * [x] Format Dates
 * [x] UpVote/DownVote Posts
 * [x] Delete Post
+* [x] Update Post
 
 Work in progress...
 
